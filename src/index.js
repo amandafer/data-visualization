@@ -6,7 +6,6 @@ import App from './App';
 import configureStore from './store';
 
 const store = configureStore();
-debugger
 
 render(
   <Provider store={store} >

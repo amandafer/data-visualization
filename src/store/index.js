@@ -8,19 +8,15 @@ import * as loggerMiddleware from '../middleware/logger';
 
 
 export default function configureStore(preloadedState) {
-  // const middlewares = [loggerMiddleware, thunkMiddleware];
-  // const middlewareEnhancer = applyMiddleware(...middlewares);
-
-  // const enhancers = [middlewareEnhancer, monitorReducersEnhancer];
-  // const composedEnhancers = composeWithDevTools(...enhancers);
-
-  // const store = createStore(rootReducer, preloadedState, composedEnhancers);
+  const middlewares = [loggerMiddleware, thunkMiddleware];
+  const middlewareEnhancer = applyMiddleware(...middlewares);
+  const enhancers = [middlewareEnhancer, monitorReducersEnhancer];
+  const composedEnhancers = composeWithDevTools(...enhancers);
 
   const store = createStore(
     rootReducer,
     preloadedState,
-    applyMiddleware(thunkMiddleware),
-    // enhancers: [monitorReducersEnhancer]
+    composeWithDevTools(applyMiddleware(thunkMiddleware))
   );
 
   if (process.env.NODE_ENV !== 'production' && module.hot) {
