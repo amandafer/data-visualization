@@ -1,30 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getProducts } from '../../actions';
+import Table from '../Table';
 
-const List = () => {
-  const [products] = useState(0);
-  debugger
+import { getUsersData } from '../../actions';
 
-  return (
-    <> {products.map(product => product.title)} </>
-  );
-};
+class List extends Component {
+	componentDidMount() {
+		const { getUsersData } = this.props;
+		getUsersData();
+	}
 
-const mapStateToProps = (state) => {
-  const { products } = state.productsReducer;
+	render() {
+		const { users } = this.props;
+		debugger;
 
-  return {
-    products
-  };
+		return (
+			<>
+				{/* {!!users.length &&
+					users.map((user, index) => (
+						<div key={`${user.id}-${index}`}>{user.first_name}</div>
+					))} */}
+				<Table />
+			</>
+		);
+	}
 }
 
+const mapStateToProps = state => {
+	const { users } = state.usersReducer;
+	return {
+		users
+	};
+};
 const mapDispatchToProps = dispatch => ({
-  getProducts: () => dispatch(getProducts())
+	getUsersData: () => dispatch(getUsersData())
 });
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(List);
