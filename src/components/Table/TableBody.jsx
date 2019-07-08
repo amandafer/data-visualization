@@ -30,25 +30,36 @@ function getSorting(order, orderBy) {
 		: (a, b) => -desc(a, b, orderBy);
 }
 
-const EnhancedTableBody = ({ rows, order, orderBy, page, rowsPerPage }) => {
+const EnhancedTableBody = ({
+	rows,
+	order,
+	orderBy,
+	page,
+	rowsPerPage,
+	headRows
+}) => {
 	return (
 		<TableBody>
-			{stableSort(rows, getSorting(order, orderBy))
-				.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-				.map((row, index) => {
-					return (
-						<TableRow hover key={`${row[0]}-${index}`}>
-							{Object.values(row).map((category, pos) => (
-								<TableCell
-									align='right'
-									key={`${row[0]}-${pos}`}
-								>
-									{category}
-								</TableCell>
-							))}
-						</TableRow>
-					);
-				})}
+			{rows.length ? (
+				stableSort(rows, getSorting(order, orderBy))
+					.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+					.map((row, index) => {
+						return (
+							<TableRow hover key={`${row[0]}-${index}`}>
+								{Object.values(headRows).map(({ id }, pos) => (
+									<TableCell
+										align='right'
+										key={`${row[0]}-${pos}`}
+									>
+										{row[id] || '-'}
+									</TableCell>
+								))}
+							</TableRow>
+						);
+					})
+			) : (
+				<TableCell>No results</TableCell>
+			)}
 		</TableBody>
 	);
 };

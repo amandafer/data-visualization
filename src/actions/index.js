@@ -1,7 +1,9 @@
 import {
 	GET_USERS_DATA,
 	GET_USERS_DATA_LOADING,
-	GET_USERS_DATA_FAILURE
+	GET_USERS_DATA_FAILURE,
+	SET_FILTERED_DATA,
+	RESET_DATA
 } from './types';
 import { userApi } from '../api/constants';
 
@@ -20,6 +22,15 @@ export const getUsersData = () => {
 			});
 	};
 };
+
+export const setFilteredData = search => ({
+	type: SET_FILTERED_DATA,
+	payload: { search }
+});
+
+export const resetData = () => ({
+	type: RESET_DATA
+});
 
 const loadingData = () => ({
 	type: GET_USERS_DATA_LOADING
