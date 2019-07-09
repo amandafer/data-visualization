@@ -11,7 +11,7 @@ import {
 const initialState = {
 	dataSet: [],
 	users: [],
-	loading: false,
+	loading: true,
 	error: false
 };
 

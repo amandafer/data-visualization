@@ -11,7 +11,7 @@ import EnhancedTableBody from './TableBody';
 const useStyles = makeStyles(theme => ({
 	root: {
 		width: '100%',
-		marginTop: theme.spacing(3)
+		marginTop: theme.spacing(8)
 	},
 	table: {
 		minWidth: 750

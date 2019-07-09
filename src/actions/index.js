@@ -9,7 +9,7 @@ import { userApi } from '../api/constants';
 
 export const getUsersData = () => {
 	return dispatch => {
-		dispatch(loadingData);
+		dispatch(loadingData());
 
 		return fetch(`${userApi}/data`)
 			.then(async data => {

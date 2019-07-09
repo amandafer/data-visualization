@@ -1,21 +1,33 @@
-import React, { Component } from 'react';
+import React, { useEffect, Component } from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+import { getUsersData } from './actions';
 import { Header } from './components/Header';
 import { List } from './components/List';
+import { Graphic } from './components/Charts';
 
-class App extends Component {
-	render() {
-		return (
-			<>
-				<Router>
-					<Header />
-					<Route exact path='/' component={List} />
-					<Route exact path='/chart' component={List} />
-				</Router>
-			</>
-		);
-	}
-}
+const App = ({ getUsersData }) => {
+	useEffect(() => {
+		getUsersData();
+	}, []);
 
-export default App;
+	return (
+		<>
+			<Router>
+				<Header />
+				<Route exact path='/' component={List} />
+				<Route exact path='/chart' component={Graphic} />
+			</Router>
+		</>
+	);
+};
+
+const mapDispatchToProps = dispatch => ({
+	getUsersData: () => dispatch(getUsersData())
+});
+
+export default connect(
+	() => ({}),
+	mapDispatchToProps
+)(App);

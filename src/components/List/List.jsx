@@ -1,9 +1,11 @@
-import React, { useState, Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import { Table } from '../Table';
 import { Search } from '../Search';
-import { getUsersData, setFilteredData } from '../../actions';
+import { setFilteredData } from '../../actions';
+import { withLoading } from '../../utils/hoc/withLoading';
 
 const headRows = [
 	{ id: 'id', numeric: true, label: 'ID' },
@@ -16,39 +18,29 @@ const headRows = [
 	{ id: 'industry', numeric: true, label: 'Industry' }
 ];
 
-class List extends Component {
-	componentDidMount() {
-		const { getUsersData } = this.props;
-		getUsersData();
-	}
-
-	render() {
-		const { users, setFilteredData } = this.props;
-
-		return (
-			<>
-				<Search
-					placeholder='Search a User'
-					onSearchHandler={setFilteredData}
-				/>
-				<Table rows={users} headRows={headRows} />
-			</>
-		);
-	}
-}
+const List = ({ users, setFilteredData }) => (
+	<>
+		<Search placeholder='Search a User' onSearchHandler={setFilteredData} />
+		<Table rows={users} headRows={headRows} />
+	</>
+);
 
 const mapStateToProps = state => {
-	const { users } = state.usersReducer;
+	const { users, loading } = state.usersReducer;
+
 	return {
-		users
+		users,
+		loading
 	};
 };
 const mapDispatchToProps = dispatch => ({
-	getUsersData: () => dispatch(getUsersData()),
 	setFilteredData: search => dispatch(setFilteredData(search))
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+export default compose(
+	connect(
+		mapStateToProps,
+		mapDispatchToProps
+	),
+	withLoading()
 )(List);
