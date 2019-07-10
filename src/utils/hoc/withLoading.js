@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
 
 export const withLoading = () => Component => props => {
 	const { loader } = useStyles();
-	debugger;
+
 	if (props.loading) {
 		return <CircularProgress className={loader} />;
 	}

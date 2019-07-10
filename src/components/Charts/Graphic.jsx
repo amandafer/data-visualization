@@ -21,9 +21,47 @@ const setAgeData = ages => [
 	['45+', ages.filter(age => age > 45).length]
 ];
 
-const setExpSalaryData = users => [
-	['Income', 'Experience'],
-	...users.map(user => [user.salary, user.years_of_experience])
+const getAverageIncome = data => {
+	const arr = Object.values(data);
+	const sum = arr.reduce((a, b) => a + b, 0);
+	return (sum / arr.length).toFixed(2);
+};
+
+const setExpSalaryData = users => {
+	let data = {};
+	users.forEach(user => {
+		const years = parseInt(user.years_of_experience);
+		data[years]
+			? data[years].push(user.salary)
+			: (data[years] = [user.salary]);
+	});
+
+	return [
+		['Experience', 'Income'],
+		...Object.keys(data).map(key => {
+			console.log(key);
+			return [parseFloat(key), parseFloat(getAverageIncome(data[key]))];
+		})
+	];
+};
+
+const chartTypes = [
+	{
+		value: 'PieChart',
+		title: 'Pie Chart'
+	},
+	{
+		value: 'BarChart',
+		title: 'Bar Chart'
+	},
+	{
+		value: 'LineChart',
+		title: 'Line Chart'
+	},
+	{
+		value: 'ScatterChart',
+		title: 'Scatter Chart'
+	}
 ];
 
 const Graphic = ({ users }) => {
@@ -31,7 +69,6 @@ const Graphic = ({ users }) => {
 	const ages = users.map(user => calculateAge(user.date_of_birth));
 	const ageData = setAgeData(ages);
 	const expSalaryData = setExpSalaryData(users);
-	// debugger; 0-2 2-4 4-6 6-8
 
 	const handleChange = event => {
 		setType(() => event.target.value);
@@ -46,10 +83,9 @@ const Graphic = ({ users }) => {
 					onChange={handleChange}
 					input={<OutlinedInput labelWidth={50} />}
 				>
-					<MenuItem value={'PieChart'}>Pie Chart</MenuItem>
-					<MenuItem value={'BarChart'}>Bar Chart</MenuItem>
-					<MenuItem value={'LineChart'}>Line Chart</MenuItem>
-					<MenuItem value={'ScatterChart'}>Scatter Chart</MenuItem>
+					{chartTypes.map(({ value, title }) => (
+						<MenuItem value={value}>{title}</MenuItem>
+					))}
 				</Select>
 			</FormControl>
 
